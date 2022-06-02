@@ -1,6 +1,6 @@
 import React from "react";
 
-const PinDetail = () => {
+const PinDetail = ({ user }) => {
   return <div>PinDetail</div>;
 };
 

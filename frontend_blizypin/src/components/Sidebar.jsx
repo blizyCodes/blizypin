@@ -3,21 +3,12 @@ import { NavLink, Link } from "react-router-dom";
 import { RiHomeFill } from "react-icons/ri";
 import { IoIosArrowForward } from "react-icons/io";
 import logo from "../assets/1.svg";
-
+import { categories } from "../utils/data";
 const isNotActiveStyle =
   "flex items-center px-5 gap-3 text-gray-500 hover:text-black transition-all duration-200 ease-in-out capitalize";
 const isActiveStyle =
   "flex items-center px-5 gap-3 font-extrabold border-r-2 border-black  transition-all duration-200 ease-in-out capitalize";
 
-const categories = [
-  { name: "Animals" },
-  { name: "Games" },
-  { name: "Music" },
-  { name: "Nature" },
-  { name: "Memes" },
-  { name: "Gastronomy" },
-  { name: "Other" },
-];
 const Sidebar = ({ user, closeToggle }) => {
   const handleClick = () => {
     if (closeToggle) closeToggle(false);
@@ -72,6 +63,7 @@ const Sidebar = ({ user, closeToggle }) => {
             className="w-10 h10 rounded-full"
           />
           <p>{user.userName}</p>
+          <IoIosArrowForward />
         </Link>
       )}
     </div>
