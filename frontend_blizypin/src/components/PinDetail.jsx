@@ -21,7 +21,6 @@ const PinDetail = ({ user }) => {
     if (query) {
       client.fetch(`${query}`).then((data) => {
         setPinDetail(data[0]);
-        console.log(data);
         if (data[0]) {
           const query1 = pinDetailMorePinQuery(data[0]);
           client.fetch(query1).then((res) => {
@@ -128,9 +127,9 @@ const PinDetail = ({ user }) => {
               ))}
             </div>
             <div className="flex flex-wrap mt-6 gap-3">
-              <Link to={`/user-profile/${user._id}`}>
+              <Link to={`/user-profile/${user?._id}`}>
                 <img
-                  src={user.image}
+                  src={user?.image}
                   className="w-10 h-10 rounded-full cursor-pointer"
                   alt="user-profile"
                 />
