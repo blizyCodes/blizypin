@@ -184,6 +184,7 @@ const CreatePin = ({ user }) => {
                   <option
                     className="text-base border-0 outline-none capitalize bg-white text-black "
                     value={item.name}
+                    key={item.name}
                   >
                     {item.name}
                   </option>

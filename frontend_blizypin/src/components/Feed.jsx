@@ -18,11 +18,13 @@ const Feed = () => {
       client.fetch(query).then((data) => {
         setPins(data);
         setisLoading(false);
+        
       });
     } else {
       client.fetch(feedQuery).then((data) => {
         setPins(data);
         setisLoading(false);
+   
       });
     }
   }, [categoryId]);
