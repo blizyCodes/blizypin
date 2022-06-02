@@ -13,14 +13,15 @@ const PinDetail = ({ user }) => {
   const [pins, setPins] = useState();
   const [pinDetail, setPinDetail] = useState();
   const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
   const [addingComment, setAddingComment] = useState(false);
 
   const fetchPinDetails = () => {
     const query = pinDetailQuery(pinId);
-
     if (query) {
       client.fetch(`${query}`).then((data) => {
         setPinDetail(data[0]);
+        setComments(data[0].comments);
         if (data[0]) {
           const query1 = pinDetailMorePinQuery(data[0]);
           client.fetch(query1).then((res) => {
@@ -38,6 +39,14 @@ const PinDetail = ({ user }) => {
   const addComment = () => {
     if (comment) {
       setAddingComment(true);
+      setComments((currComments) => {
+        currComments.push({
+          comment,
+          _key: uuidv4(),
+          postedBy: { image: user.image, userName: user.userName },
+        });
+        return currComments;
+      });
       client
         .patch(pinId)
         .setIfMissing({ comments: [] })
@@ -50,9 +59,14 @@ const PinDetail = ({ user }) => {
         ])
         .commit()
         .then(() => {
-          fetchPinDetails();
           setComment("");
           setAddingComment(false);
+        })
+        .catch((err) => {
+          setComments((currComments) => {
+            currComments.pop();
+            return currComments;
+          });
         });
     }
   };
@@ -109,7 +123,7 @@ const PinDetail = ({ user }) => {
             </Link>
             <h2 className="mt-5 text-2xl">Comments</h2>
             <div className="max-h-370 overflow-y-auto">
-              {pinDetail?.comments?.map((item) => (
+              {comments?.map((item) => (
                 <div
                   className="flex gap-2 mt-5 items-center bg-white rounded-lg"
                   key={item.comment}
