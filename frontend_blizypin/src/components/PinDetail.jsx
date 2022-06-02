@@ -13,7 +13,6 @@ const PinDetail = ({ user }) => {
   const [pins, setPins] = useState();
   const [pinDetail, setPinDetail] = useState();
   const [comment, setComment] = useState("");
-
   const [addingComment, setAddingComment] = useState(false);
 
   const fetchPinDetails = () => {
