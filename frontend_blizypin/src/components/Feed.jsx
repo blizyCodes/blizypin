@@ -30,6 +30,7 @@ const Feed = () => {
   if (isLoading)
     return <Spinner message="We are adding more inspiration to your feed!" />;
   if (
+    categoryId &&
     categories.filter((category) => {
       return category.name === categoryId;
     }).length === 0
