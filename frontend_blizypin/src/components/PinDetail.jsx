@@ -26,7 +26,7 @@ const PinDetail = ({ user }) => {
         .fetch(`${query}`)
         .then((data) => {
           setPinDetail(data[0]);
-          setComments(data[0].comments);
+          if (data[0].comments) setComments(data[0].comments);
           if (data[0]) {
             const query1 = pinDetailMorePinQuery(data[0]);
             client.fetch(query1).then((res) => {
@@ -54,12 +54,14 @@ const PinDetail = ({ user }) => {
     if (comment) {
       setAddingComment(true);
       setComments((currComments) => {
-        currComments.push({
-          comment,
-          _key: uuidv4(),
-          postedBy: { image: user.image, userName: user.userName },
-        });
-        return currComments;
+        return [
+          ...currComments,
+          {
+            comment,
+            _key: uuidv4(),
+            postedBy: { image: user.image, userName: user.userName },
+          },
+        ];
       });
       client
         .patch(pinId)
