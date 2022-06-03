@@ -1,11 +1,12 @@
 {
   "root": true,
+
+  "project": {
+    "name": "blizypin"
+  },
   "api": {
     "projectId": "pu3su3is",
     "dataset": "production"
-  },
-  "project": {
-    "name": "blizypin"
   },
   "plugins": [
     "@sanity/base",
@@ -15,9 +16,7 @@
   ],
   "env": {
     "development": {
-      "plugins": [
-        "@sanity/vision"
-      ]
+      "plugins": ["@sanity/vision"]
     }
   },
   "parts": [

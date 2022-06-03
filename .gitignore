@@ -23,7 +23,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 frontend_blizypin/.env
-backend_blizypin/sanity.json
+
 
 # Local Netlify folder
 .netlify
+backend_blizypin/sanity.json
