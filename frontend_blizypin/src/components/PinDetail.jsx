@@ -7,6 +7,7 @@ import { client, urlFor } from "../client";
 import MasonryLayout from "./MasonryLayout";
 import { pinDetailMorePinQuery, pinDetailQuery } from "../utils/data";
 import Spinner from "./Spinner";
+import ErrorPage from "./ErrorPage";
 
 const PinDetail = ({ user }) => {
   const { pinId } = useParams();
@@ -15,26 +16,39 @@ const PinDetail = ({ user }) => {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
   const [addingComment, setAddingComment] = useState(false);
+  const [error, setError] = useState(null);
 
   const fetchPinDetails = () => {
+    setError(null);
     const query = pinDetailQuery(pinId);
     if (query) {
-      client.fetch(`${query}`).then((data) => {
-        setPinDetail(data[0]);
-        setComments(data[0].comments);
-        if (data[0]) {
-          const query1 = pinDetailMorePinQuery(data[0]);
-          client.fetch(query1).then((res) => {
-            setPins(res);
-          });
-        }
-      });
+      client
+        .fetch(`${query}`)
+        .then((data) => {
+          setPinDetail(data[0]);
+          setComments(data[0].comments);
+          if (data[0]) {
+            const query1 = pinDetailMorePinQuery(data[0]);
+            client.fetch(query1).then((res) => {
+              setPins(res);
+            });
+          }
+        })
+        .catch((err) => {
+          setError("This pin does not exist. You may be lost");
+        });
     }
   };
 
   useEffect(() => {
     fetchPinDetails();
   }, [pinId]);
+
+  const deleteComment = (id) => {
+    client.delete(id).then(() => {
+      window.location.reload();
+    });
+  };
 
   const addComment = () => {
     if (comment) {
@@ -63,6 +77,7 @@ const PinDetail = ({ user }) => {
           setAddingComment(false);
         })
         .catch((err) => {
+          deleteComment(comments[comments.length - 1]._key);
           setComments((currComments) => {
             currComments.pop();
             return currComments;
@@ -72,7 +87,7 @@ const PinDetail = ({ user }) => {
   };
 
   if (!pinDetail) {
-    return <Spinner message="Showing pin" />;
+    return <ErrorPage error={error} />;
   }
 
   return (
@@ -126,7 +141,7 @@ const PinDetail = ({ user }) => {
               {comments?.map((item) => (
                 <div
                   className="flex gap-2 mt-5 items-center bg-white rounded-lg"
-                  key={item.comment}
+                  key={item._key}
                 >
                   <img
                     src={item.postedBy?.image}

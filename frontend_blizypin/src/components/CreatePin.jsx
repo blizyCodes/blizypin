@@ -47,11 +47,15 @@ const CreatePin = ({ user }) => {
 
   const submitPin = () => {
     if (title && about && destination && imageAsset?._id && category) {
+      const refactoredDestination =
+        destination.includes("https://") || destination.includes("http://")
+          ? destination
+          : `https://${destination}`;
       const doc = {
         _type: "pin",
         title,
         about,
-        destination,
+        destination: refactoredDestination,
         image: {
           _type: "image",
           asset: {
@@ -92,7 +96,7 @@ const CreatePin = ({ user }) => {
             {wrongImageType && <p>Wrong image type</p>}
             {!imageAsset ? (
               <label>
-                <div className="flex flex-col items-center justify-center h-full">
+                <div className="flex flex-col items-center justify-center h-full cursor-pointer">
                   <div className="flex flex-col justify-center items-center">
                     {" "}
                     <p className="font-bold text-2xl">
